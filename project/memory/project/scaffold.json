@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "cofabric.memory.scaffold.v1",
+  "fileTree": [
+    {
+      "path": "package.json",
+      "purpose": "Next.js app with Supabase, OpenAI, Stripe dependencies",
+      "isEmpty": false
+    },
+    {
+      "path": "tsconfig.json",
+      "purpose": "TypeScript config with path mapping (@/*)",
+      "isEmpty": false
+    },
+    {
+      "path": "next.config.js",
+      "purpose": "Next.js config for app directory",
+      "isEmpty": false
+    },
+    {
+      "path": "tailwind.config.js",
+      "purpose": "Tailwind CSS setup with content paths",
+      "isEmpty": false
+    },
+    {
+      "path": "postcss.config.js",
+      "purpose": "PostCSS config for Tailwind",
+      "isEmpty": false
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "purpose": "Root layout with Mindful Journal metadata",
+      "isEmpty": false
+    },
+    {
+      "path": "src/app/page.tsx",
+      "purpose": "Landing page showcasing journaling and mood tracking features",
+      "isEmpty": false
+    },
+    {
+      "path": "src/app/globals.css",
+      "purpose": "Global styles with Tailwind",
+      "isEmpty": false
+    },
+    {
+      "path": "src/lib/supabase.ts",
+      "purpose": "Supabase client initialization",
+      "isEmpty": false
+    },
+    {
+      "path": "src/lib/openai.ts",
+      "purpose": "OpenAI client initialization",
+      "isEmpty": false
+    },
+    {
+      "path": "src/lib/stripe.ts",
+      "purpose": "Stripe client initialization",
+      "isEmpty": false
+    },
+    {
+      "path": ".env.example",
+      "purpose": "Environment variable template",
+      "isEmpty": false
+    },
+    {
+      "path": ".gitignore",
+      "purpose": "Standard Next.js gitignore",
+      "isEmpty": false
+    }
+  ],
+  "libraryExports": [
+    {
+      "file": "src/lib/supabase.ts",
+      "exports": []
+    },
+    {
+      "file": "src/lib/openai.ts",
+      "exports": []
+    },
+    {
+      "file": "src/lib/stripe.ts",
+      "exports": []
+    }
+  ],
+  "existingRoutes": [
+    {
+      "type": "page",
+      "path": "/",
+      "file": "src/app/page.tsx",
+      "httpMethods": null,
+      "isEmpty": false
+    }
+  ],
+  "databaseState": {
+    "migrationsExist": false,
+    "tables": []
+  },
+  "intentionallyEmpty": []
+}

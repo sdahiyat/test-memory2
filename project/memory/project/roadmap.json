@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "cofabric.memory.roadmap.v1",
+  "featuresNotYetImplemented": [
+    {
+      "name": "Journal entries management",
+      "description": "Journal entries (create/edit/delete)",
+      "needs": [
+        "pages",
+        "API routes",
+        "DB tables"
+      ]
+    },
+    {
+      "name": "Mood logging",
+      "description": "Mood logging (daily)",
+      "needs": [
+        "pages",
+        "API routes",
+        "DB tables"
+      ]
+    },
+    {
+      "name": "Timeline view",
+      "description": "Timeline view (entries + moods)",
+      "needs": [
+        "pages",
+        "API routes"
+      ]
+    },
+    {
+      "name": "AI insights",
+      "description": "AI insights (paid)",
+      "needs": [
+        "pages",
+        "API routes"
+      ]
+    },
+    {
+      "name": "Search functionality",
+      "description": "Search (entries + tags)",
+      "needs": [
+        "pages",
+        "API routes"
+      ]
+    },
+    {
+      "name": "Dashboard overview",
+      "description": "Overview",
+      "needs": [
+        "pages"
+      ]
+    },
+    {
+      "name": "Analytics insights",
+      "description": "Insights",
+      "needs": [
+        "pages"
+      ]
+    },
+    {
+      "name": "User settings",
+      "description": "User settings",
+      "needs": [
+        "pages"
+      ]
+    }
+  ],
+  "databaseTablesToCreate": [
+    {
+      "name": "User",
+      "columnsSpecifiedInSpec": [
+        {
+          "name": "id",
+          "type": null,
+          "notes": null
+        },
+        {
+          "name": "email",
+          "type": null,
+          "notes": null
+        }
+      ],
+      "schemaDetailsInSpec": false
+    },
+    {
+      "name": "Entry",
+      "columnsSpecifiedInSpec": [
+        {
+          "name": "id",
+          "type": null,
+          "notes": null
+        },
+        {
+          "name": "user_id",
+          "type": null,
+          "notes": null
+        },
+        {
+          "name": "content",
+          "type": null,
+          "notes": null
+        },
+        {
+          "name": "created_at",
+          "type": null,
+          "notes": null
+        }
+      ],
+      "schemaDetailsInSpec": false
+    },
+    {
+      "name": "MoodLog",
+      "columnsSpecifiedInSpec": [
+        {
+          "name": "id",
+          "type": null,
+          "notes": null
+        },
+        {
+          "name": "user_id",
+          "type": null,
+          "notes": null
+        },
+        {
+          "name": "mood",
+          "type": null,
+          "notes": null
+        },
+        {
+          "name": "created_at",
+          "type": null,
+          "notes": null
+        }
+      ],
+      "schemaDetailsInSpec": false
+    }
+  ],
+  "apiEndpointsToBuild": [
+    {
+      "method": "POST",
+      "path": "/api/entries",
+      "description": "createEntry",
+      "authRequired": null
+    },
+    {
+      "method": "PUT",
+      "path": "/api/entries",
+      "description": "updateEntry",
+      "authRequired": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/entries",
+      "description": "deleteEntry",
+      "authRequired": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/mood",
+      "description": "logMood",
+      "authRequired": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/insights",
+      "description": "generateInsights",
+      "authRequired": null
+    }
+  ],
+  "openQuestions": [
+    "What mood values/categories should be supported?",
+    "How should tags be implemented for search functionality?",
+    "What specific AI insights should be generated?",
+    "How should daily limits (5 entries, 3 mood logs) be enforced?",
+    "What payment tiers should be implemented with Stripe?",
+    "Should there be user authentication flows beyond basic Supabase auth?",
+    "What analytics should be shown on the analytics page?"
+  ]
+}

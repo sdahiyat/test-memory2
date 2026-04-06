@@ -1,72 +1,58 @@
-# Project Overview
-
-## Current State
-
-**Built and working:**
-- Landing page (src/app/page.tsx) with basic journaling/mood tracking marketing copy
-- Root layout with Mindful Journal branding
-- Client initialization for Supabase, OpenAI, and Stripe in lib/ directory
-- Tailwind CSS styling system configured
-
-**Scaffolded but empty:**
-- Supabase client (src/lib/supabase.ts) - initialized but no auth methods
-- OpenAI client (src/lib/openai.ts) - initialized but no insight generation
-- Stripe client (src/lib/stripe.ts) - initialized but no payment flows
-
-**Not started at all:**
-- All dashboard pages (/dashboard, /journal, /mood, /analytics, /settings)
-- Authentication system (login/signup/logout)
-- Database schema and tables
-- CRUD operations for entries and mood logs
-- AI insights generation
-- Search functionality
-- User limits enforcement
-- Payment integration
-
-## Core Entities and Relationships
-
-**NOT YET DEFINED** — Database schema needs to be created in Supabase. Planned structure:
-
-**Users table:**
-- id: uuid (primary key, references auth.users)
-- email: text (not null)
-- created_at: timestamp (default now())
-- subscription_tier: text (default 'free')
-
-**Entries table:**
-- id: uuid (primary key, default gen_random_uuid())
-- user_id: uuid (foreign key to users.id, not null)
-- content: text (not null)
-- created_at: timestamp (default now())
-- updated_at: timestamp (default now())
-
-**MoodLogs table:**
-- id: uuid (primary key, default gen_random_uuid())
-- user_id: uuid (foreign key to users.id, not null)
-- mood: integer (not null, 1-10 scale)
-- created_at: timestamp (default now())
-
-**RLS policies needed:**
-- Users: can only read/update their own row
-- Entries: can only CRUD their own entries
-- MoodLogs: can only CRUD their own mood logs
-
-## API Surface
-
-**Currently no API routes exist.** Need to build:
-- POST /api/entries (authenticated)
-- GET /api/entries (authenticated) 
-- PUT /api/entries/[id] (authenticated, owner only)
-- DELETE /api/entries/[id] (authenticated, owner only)
-- POST /api/mood (authenticated)
-- GET /api/mood (authenticated)
-- POST /api/ai/insights (authenticated, paid tier only)
-- GET /api/search (authenticated)
-
-## Key Integration Points
-
-**Supabase:** Client initialized in src/lib/supabase.ts but no auth configuration exists. Need to set up separate server/client instances for App Router.
-
-**OpenAI:** Client in src/lib/openai.ts uses OPENAI_API_KEY env var. Will be called from /api/ai/insights route for paid users.
-
-**Stripe:** Client in src/lib/stripe.ts uses STRIPE_SECRET_KEY. Need to integrate with subscription checks and webhook handling for payment state.
+{
+  "schemaVersion": "cofabric.memory.project.v1",
+  "name": "Mindful Journal",
+  "oneLineDescription": "A journaling + mood tracking web app with AI-generated reflections",
+  "whatItIs": "A journaling + mood tracking web app with AI-generated reflections.",
+  "stack": [
+    {
+      "name": "next",
+      "version": null,
+      "purpose": "React framework"
+    },
+    {
+      "name": "@supabase/supabase-js",
+      "version": null,
+      "purpose": "Database and auth"
+    },
+    {
+      "name": "openai",
+      "version": null,
+      "purpose": "AI insights generation"
+    },
+    {
+      "name": "stripe",
+      "version": null,
+      "purpose": "Payment processing"
+    },
+    {
+      "name": "tailwindcss",
+      "version": null,
+      "purpose": "CSS styling"
+    }
+  ],
+  "externalIntegrations": [
+    {
+      "service": "Supabase",
+      "envVars": [],
+      "clientLocation": "src/lib/supabase.ts"
+    },
+    {
+      "service": "OpenAI",
+      "envVars": [],
+      "clientLocation": "src/lib/openai.ts"
+    },
+    {
+      "service": "Stripe",
+      "envVars": [],
+      "clientLocation": "src/lib/stripe.ts"
+    }
+  ],
+  "coreUserFlows": [
+    "Create, edit, and delete journal entries",
+    "Log daily mood with tracking",
+    "View timeline of entries and moods",
+    "Generate AI insights (paid feature)",
+    "Search entries and tags"
+  ],
+  "outOfScope": []
+}
