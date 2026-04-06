@@ -1,0 +1,101 @@
+# Architecture
+
+## Folder Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx (root layout with metadata)
+│   ├── page.tsx (landing page)
+│   └── globals.css (Tailwind base styles)
+├── lib/
+│   ├── supabase.ts (client initialization)
+│   ├── openai.ts (OpenAI client)
+│   └── stripe.ts (Stripe client)
+```
+
+**Missing directories to create:**
+- src/app/dashboard/ (dashboard page)
+- src/app/journal/ (journal entries page)
+- src/app/mood/ (mood tracking page) 
+- src/app/analytics/ (AI insights page)
+- src/app/settings/ (user settings page)
+- src/app/api/ (API routes directory)
+- src/components/ (shared UI components)
+- src/types/ (TypeScript type definitions)
+
+## Data Models with Full Schemas
+
+**NOT YET DEFINED** — Tables need to be created in Supabase:
+
+```sql
+-- Users table (extends Supabase auth.users)
+CREATE TABLE users (
+  id uuid REFERENCES auth.users PRIMARY KEY,
+  email text NOT NULL,
+  subscription_tier text DEFAULT 'free',
+  created_at timestamp DEFAULT now()
+);
+
+-- Entries table
+CREATE TABLE entries (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id uuid REFERENCES users(id) NOT NULL,
+  content text NOT NULL,
+  created_at timestamp DEFAULT now(),
+  updated_at timestamp DEFAULT now()
+);
+
+-- MoodLogs table  
+CREATE TABLE mood_logs (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id uuid REFERENCES users(id) NOT NULL,
+  mood integer NOT NULL CHECK (mood >= 1 AND mood <= 10),
+  created_at timestamp DEFAULT now()
+);
+```
+
+**RLS policies:**
+- Users: `user_id = auth.uid()`
+- Entries: `user_id = auth.uid()` 
+- MoodLogs: `user_id = auth.uid()`
+
+## Auth Flow
+
+**NOT YET DEFINED** — Need to implement:
+1. Supabase Auth with email/password signup/login
+2. Session stored in HTTP-only cookies
+3. Server components: access via Supabase server client
+4. Client components: access via Supabase client
+5. API routes: verify session on each request
+6. Redirect unauthorized users to login page
+
+## Key Architectural Decisions
+
+**App Router:** Using Next.js 14 App Router (not Pages Router)
+- Server components by default
+- Add 'use client' only for interactivity/browser APIs
+- Data fetching in server components, not useEffect
+
+**Supabase patterns:**
+- Need separate server/client instances for App Router
+- All database access goes through Supabase clients
+- RLS enforces data isolation per user
+
+**AI features:**
+- Gated behind subscription check
+- OpenAI calls happen server-side only
+- Generate insights from user's entries + mood patterns
+
+## What Does NOT Exist Yet
+
+- No authentication middleware (each route checks auth individually)
+- No user session management
+- No database tables or RLS policies  
+- No rate limiting for user limits (5 entries/day, 3 mood logs/day)
+- No subscription management or Stripe webhooks
+- No email notifications
+- No caching layer
+- No global state management
+- No error boundary components
+- No loading states or skeletons

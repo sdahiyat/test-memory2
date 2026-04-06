@@ -1,0 +1,155 @@
+# Conventions
+
+## Import Patterns
+
+**Supabase clients (to be created):**
+```typescript
+// Server components and API routes
+import { createClient } from '@/lib/supabase/server'
+
+// Client components
+import { createClient } from '@/lib/supabase/client'
+```
+
+**Other services:**
+```typescript
+import { openai } from '@/lib/openai'
+import { stripe } from '@/lib/stripe'
+```
+
+**Components:**
+```typescript
+import { ComponentName } from '@/components/ComponentName'
+```
+
+## API Route Shape
+
+```typescript
+import { createClient } from '@/lib/supabase/server'
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET(request: NextRequest) {
+  try {
+    const supabase = createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
+    // Your logic here
+    
+    return NextResponse.json({ data: result })
+  } catch (error) {
+    console.error('API Error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' }, 
+      { status: 500 }
+    )
+  }
+}
+```
+
+## Error Handling Pattern
+
+```typescript
+try {
+  // Supabase operation
+  const { data, error } = await supabase
+    .from('entries')
+    .select('*')
+  
+  if (error) {
+    console.error('Supabase error:', error)
+    throw new Error(`Database error: ${error.message}`)
+  }
+  
+  return data
+} catch (error) {
+  console.error('Operation failed:', error)
+  // Re-throw for API routes to handle
+  throw error
+}
+```
+
+## Component Patterns
+
+**Server components (default):**
+- Fetch data directly in component
+- Use Supabase server client
+- No useState, useEffect, or browser APIs
+
+```typescript
+import { createClient } from '@/lib/supabase/server'
+
+export default async function EntriesPage() {
+  const supabase = createClient()
+  const { data: entries } = await supabase
+    .from('entries')
+    .select('*')
+    .order('created_at', { ascending: false })
+  
+  return <div>{/* Render entries */}</div>
+}
+```
+
+**Client components (when needed):**
+- Add 'use client' at top
+- Use for forms, interactivity, browser APIs
+- Fetch via API routes, not direct Supabase
+
+```typescript
+'use client'
+
+import { useState } from 'react'
+
+export function EntryForm() {
+  const [content, setContent] = useState('')
+  
+  const handleSubmit = async () => {
+    await fetch('/api/entries', {
+      method: 'POST',
+      body: JSON.stringify({ content })
+    })
+  }
+  
+  return <form onSubmit={handleSubmit}>{/* Form */}</form>
+}
+```
+
+## Database Access Patterns
+
+- **Server components:** Use `createClient()` from '@/lib/supabase/server'
+- **API routes:** Use `createClient()` from '@/lib/supabase/server' 
+- **Client components:** Call API routes, not direct Supabase
+- **Server Actions:** Use `createClient()` from '@/lib/supabase/server'
+
+## Naming Conventions
+
+**Files:**
+- Pages: `page.tsx`
+- Components: `ComponentName.tsx` (PascalCase)
+- API routes: `route.ts`
+- Utilities: `kebab-case.ts`
+
+**Variables:**
+- Supabase client: `supabase`
+- Authenticated user: `user`
+- Database results: `{ data, error }`
+- Props interfaces: `ComponentNameProps`
+
+**Components:**
+- PascalCase for component names
+- kebab-case for file names in app directory
+- Descriptive names: `EntryList`, `MoodSelector`, `InsightsCard`
+
+## Anti-patterns — Do NOT Do These
+
+- **Don't import from @supabase/supabase-js directly** — use the configured clients in lib/
+- **Don't fetch data in client components** — use server components or API routes
+- **Don't use `any` type** — define proper interfaces for Supabase responses
+- **Don't skip auth checks in API routes** — every protected route must verify the user
+- **Don't put sensitive operations in client components** — keep API keys server-side
+- **Don't forget RLS policies** — always test that users can't access others' data
+- **Don't use useEffect for initial data** — use server components for SSR
+- **Don't create pages in src/pages/** — use app/ directory structure

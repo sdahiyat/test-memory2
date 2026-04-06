@@ -1,0 +1,126 @@
+# Claude Code Agent Instructions
+
+## Before Starting Any Task
+
+**Required reading order:**
+1. Read "project" memory file for current state and data models
+2. Read "architecture" memory file for structural decisions  
+3. Read "conventions" memory file for code patterns
+4. Check existing files in target directory before creating new ones
+5. If modifying existing files, read them completely first
+
+**Task interpretation:**
+- Acceptance criteria are requirements, not suggestions
+- If database schema is needed, create Supabase migration first
+- If auth is needed for a feature, implement the auth flow first
+- Build incrementally — get basic version working before adding complexity
+
+## Working Rules
+
+**Before committing code:**
+```bash
+npm run build  # Must pass without errors
+npx tsc --noEmit  # Must pass type checking
+npm run lint  # Must pass ESLint
+```
+
+**File creation rules:**
+- Every new app/ page needs proper TypeScript types
+- API routes go in app/api/ with route.ts naming
+- Shared components go in src/components/
+- Database types go in src/types/database.ts
+- Create loading.tsx and error.tsx for pages that need them
+
+**Modification rules:**
+- Before modifying lib/ files, check all their imports across the codebase
+- Never overwrite scaffold files unless fixing specific bugs
+- When adding API routes, implement proper auth checks first
+- When creating database operations, test RLS policies work
+
+**Import rules:**
+- Use @/ path mapping for all internal imports
+- Import Supabase clients from lib/supabase/server or lib/supabase/client
+- Never import from @supabase/supabase-js directly
+- Use Next.js built-ins: `import { NextRequest, NextResponse } from 'next/server'`
+
+## Commit Conventions
+
+**Format:** `type(scope): description`
+
+**Valid types:**
+- feat: new feature
+- fix: bug fix  
+- db: database schema changes
+- auth: authentication changes
+- api: API route changes
+- ui: component/styling changes
+- config: configuration changes
+
+**Scope examples:** auth, entries, mood, analytics, api, db
+
+**One commit:**
+- Single feature implementation
+- Related file changes (component + API route)
+- Bug fix with test
+
+**Multiple commits:**
+- Database schema (separate commit)
+- API implementation (separate commit)  
+- UI implementation (separate commit)
+- Large features spanning multiple pages
+
+**Commit body:**
+- List the files changed
+- Explain any architectural decisions
+- Note any breaking changes
+
+## PR Rules
+
+**Before opening PR:**
+- All checks pass: `npm run build && npx tsc --noEmit && npm run lint`
+- Test the feature works end-to-end
+- Verify auth restrictions work correctly
+- Check responsive design on mobile
+
+**PR description format:**
+```
+## What
+[Brief description of changes]
+
+## Why  
+[Why this change was needed]
+
+## Testing
+[How to test the changes]
+
+## Files
+- Added: [new files]
+- Modified: [changed files]
+- Removed: [deleted files]
+```
+
+## What This Agent Must Never Do
+
+**Security violations:**
+- Never expose API keys in client-side code
+- Never skip auth checks in protected API routes
+- Never commit .env files or secrets
+- Never create database operations without RLS policies
+
+**Architecture violations:**
+- Never modify scaffold files in root/ unless fixing bugs
+- Never use Pages Router patterns (use App Router)
+- Never import Supabase clients incorrectly
+- Never put server-only code in client components
+
+**Code quality violations:**
+- Never commit code that doesn't pass TypeScript checks
+- Never use `any` types without justification
+- Never create API routes without proper error handling
+- Never skip input validation on API endpoints
+
+**Project violations:**
+- Never implement features without checking user limits (5 entries/day, 3 mood logs/day)
+- Never give free users access to AI features
+- Never create public endpoints for user data
+- Never bypass the established Supabase client patterns
