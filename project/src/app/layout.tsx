@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Mindful Journal',
-  description: 'A journaling and mood tracking app with AI-powered insights to help you understand your emotional patterns and personal growth.',
+  description: 'A journaling and mood tracking app with AI-powered insights to help you understand your mental wellness journey.',
 }
 
 export default function RootLayout({
